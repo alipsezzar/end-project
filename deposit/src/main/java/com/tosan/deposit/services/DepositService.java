@@ -31,20 +31,28 @@ public class DepositService {
     }
 
     public void openDeposit(Long customerId, int depositType, String fName, String lName, Long initBalance){
-        Deposit deposit = new Deposit(
-                DepositType.values()[depositType],
-                fName + lName + DepositType.values()[depositType].name(),
-                DepositStatus.OPEN,
-                Deposit.generateDepositNumber(),
-                AccountCurrency.RIAL,
-                new BigDecimal(initBalance),
-                LocalDate.now(),
-                Deposit.nextYearDate(),
-                customerId
-        );
+        String url = String.format("http://localhost:8080/customer/customer-exists?customerId=%d", customerId);
+        Boolean customerExists = restTemplate.getForObject(url, Boolean.class);
+        if (Boolean.TRUE.equals(customerExists)){
+            Deposit deposit = new Deposit(
+                    DepositType.values()[depositType],
+                    fName + lName + DepositType.values()[depositType].name(),
+                    DepositStatus.OPEN,
+                    Deposit.generateDepositNumber(),
+                    AccountCurrency.RIAL,
+                    new BigDecimal(initBalance),
+                    LocalDate.now(),
+                    Deposit.nextYearDate(),
+                    customerId
+            );
 
-        depositRepository.save(deposit);
-        LOGGER.info("new deposit added");
+            depositRepository.save(deposit);
+            LOGGER.info("new deposit added");
+        }
+        else{
+            LOGGER.error("No customer with this id");
+            throw new IllegalStateException("No customer with this id");
+        }
     }
 
     public List<Deposit> getAllDeposits(){

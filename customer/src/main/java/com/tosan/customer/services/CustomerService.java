@@ -104,4 +104,9 @@ public class CustomerService {
        LOGGER.error("No customer with this id");
        throw new IllegalStateException();
     }
+
+    public Boolean customerExists(Long customerId){
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        return customer.isPresent();
+    }
 }

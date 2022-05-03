@@ -50,4 +50,9 @@ public class CustomerController {
     public Object getCustomer(@RequestParam("customerId") Long customerId){
         return customerService.getCustomer(customerId);
     }
+
+    @GetMapping(path = "/customer-exists")
+    public Boolean customerExists(@RequestParam("customerId") Long customerId){
+        return customerService.customerExists(customerId);
+    }
 }
