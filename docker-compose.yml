@@ -1,0 +1,53 @@
+services:
+  mysql-customer:
+    container_name: customer
+    image: "mysql:latest"
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: ""
+
+    volumes:
+      - mysql:/data/mysql
+    ports:
+      - "3307:3307"
+    networks:
+      - mysql
+    restart: unless-stopped
+
+  mysql-deposit:
+    container_name: deposit
+    image: "mysql:latest"
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: ""
+
+    volumes:
+      - mysql:/data/mysql
+    ports:
+      - "3307:3307"
+    networks:
+      - mysql
+    restart: unless-stopped
+
+  mysql-transaction:
+    container_name: transaction
+    image: "mysql:latest"
+    environment:
+      MYSQL_USER: "root"
+      MYSQL_PASSWORD: ""
+
+    volumes:
+      - mysql:/data/mysql
+    ports:
+      - "3307:3307"
+    networks:
+      - mysql
+    restart: unless-stopped
+
+networks:
+  mysql:
+    driver: bridge
+
+volumes:
+  mysql:
+  pgadmin:
